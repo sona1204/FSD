@@ -1,0 +1,89 @@
+const mysql = require("mysql2");
+
+const con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "yourpassword",
+  database: "yourdatabase"
+});
+
+con.connect((err) => {
+  if (err) throw err;
+  console.log("Connected!");
+
+  con.query("SELECT * FROM customers", (err, result) => {
+    if (err) throw err;
+
+    console.log("Customers Data:");
+    console.log(result);
+
+    con.end();
+  });
+});
+
+Q2)
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Feedback Form</title>
+  <script>
+    function validateForm() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const mobile = document.getElementById("mobile").value;
+      const feedback = document.querySelector('input[name="feedback"]:checked');
+
+      const nameRegex = /^[A-Za-z ]{3,}$/;
+      const emailRegex = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      const mobileRegex = /^[0-9]{10}$/;
+
+      if (!nameRegex.test(name)) {
+        alert("Invalid Name");
+        return false;
+      }
+
+      if (!emailRegex.test(email)) {
+        alert("Invalid Email");
+        return false;
+      }
+
+      if (!mobileRegex.test(mobile)) {
+        alert("Invalid Mobile Number");
+        return false;
+      }
+
+      if (!feedback) {
+        alert("Please select feedback");
+        return false;
+      }
+
+      alert("Form Submitted Successfully!");
+      return true;
+    }
+  </script>
+</head>
+<body>
+
+  <h2>Student Feedback Form</h2>
+
+  <form onsubmit="return validateForm()">
+    <label>Name:</label><br>
+    <input type="text" id="name"><br><br>
+
+    <label>Email:</label><br>
+    <input type="text" id="email"><br><br>
+
+    <label>Mobile No:</label><br>
+    <input type="text" id="mobile"><br><br>
+
+    <label>Feedback:</label><br>
+    <input type="radio" name="feedback" value="Not good"> Not good<br>
+    <input type="radio" name="feedback" value="Good"> Good<br>
+    <input type="radio" name="feedback" value="Very good"> Very good<br>
+    <input type="radio" name="feedback" value="Excellent"> Excellent<br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+</body>
+</html>
