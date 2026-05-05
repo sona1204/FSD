@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="dateTimeApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date and Time Display</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="DateTimeController">
+
+<h2>Date and Time Display</h2>
+
+<p>{{ dateTime }}</p>
+
+<script>
+    angular.module('dateTimeApp', [])
+        .controller('DateTimeController', function($scope, $interval) {
+            
+            function updateDateTime() {
+                $scope.dateTime = new Date();
+            }
+
+            updateDateTime();
+            var intervalPromise = $interval(updateDateTime, 1000);
+
+            $scope.$on('$destroy', function() {
+                $interval.cancel(intervalPromise);
+            });
+        });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+Q.2) 
+
+// main.js
+
+const EventEmitter = require('events');
+
+const eventEmitter = new EventEmitter();
+
+eventEmitter.on('event1', () => {
+    console.log('Event 1 triggered');
+});
+
+eventEmitter.on('event2', () => {
+    console.log('Event 2 triggered');
+});
+
+
+console.log('Listening for events...');
+setInterval(() => {    
+    const randomEvent = Math.random() < 0.5 ? 'event1' : 'event2';
+    eventEmitter.emit(randomEvent);
+}, 2000); 
