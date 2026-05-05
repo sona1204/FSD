@@ -1,0 +1,71 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+const user = {
+  username: 'admin',
+  password: '12345'
+};
+
+
+app.get('/', (req, res) => {
+  res.send(`
+    <h2>Login Form</h2>
+    <form method="POST" action="/login">
+      Username: <input type="text" name="username" /> <br/>
+      Password: <input type="password" name="password" /> <br/>
+      <button type="submit">Login</button>
+    </form>
+  `);
+});
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  if(username === user.username && password === user.password) {
+    res.send('<h2>Login Successful!</h2>');
+  } else {
+    res.send('<h2>Invalid Username or Password</h2>');
+  }
+});
+
+
+app.listen(3000, () => {
+  console.log('Server started on http://localhost:3000');
+});
+
+
+Q2
+
+const mysql = require('mysql');
+
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',     // replace with your MySQL username
+  password: '',     // replace with your MySQL password
+  database: 'school' // replace with your database name
+});
+
+
+connection.connect(err => {
+  if (err) throw err;
+  console.log('Connected to MySQL database');
+
+  connection.query('SELECT * FROM Teacher', (err, results) => {
+    if (err) throw err;
+    console.log('All Teachers:', results);
+
+    
+    connection.query('SELECT * FROM Teacher WHERE salary > 20000', (err, highSalary) => {
+      if (err) throw err;
+      console.log('Teachers with Salary > 20000:', highSalary);
+
+      // Close connection
+      connection.end();
+    });
+  });
+});
