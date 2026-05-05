@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="locationApp">
+<head>
+  <title>Current Page Location</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-controller="LocationController">
+
+  <h2>Current Web Page Location</h2>
+
+  <p><strong>Full URL:</strong> {{ location.href }}</p>
+  <p><strong>Protocol:</strong> {{ location.protocol }}</p>
+  <p><strong>Host:</strong> {{ location.host }}</p>
+  <p><strong>Pathname:</strong> {{ location.pathname }}</p>
+
+  <script>
+    var app = angular.module("locationApp", []);
+
+    app.controller("LocationController", function($scope, $window) {
+      $scope.location = $window.location;
+    });
+  </script>
+
+</body>
+</html>
+
+Q2)
+// main.js
+const eventHandlers = {};
+
+function on(eventType, callback) {
+    if (!eventHandlers[eventType]) {
+        eventHandlers[eventType] = [];
+    }
+    eventHandlers[eventType].push(callback);
+}
+
+function emit(eventType, data) {
+    if (eventHandlers[eventType]) {
+        eventHandlers[eventType].forEach(callback => {
+            callback(data);
+        });
+    }
+}
+
+function startEventLoop() {
+
+    console.log("Event loop started...");
+
+  
+    document.addEventListener("click", function (e) {
+        emit("click", e);
+    });
+
+    document.addEventListener("keydown", function (e) {
+        emit("keydown", e);
+    });
+
+    setInterval(() => {
+        emit("tick", { time: new Date() });
+    }, 3000);
+}
+
+
+on("click", function (e) {
+    console.log("Click event detected at:", e.clientX, e.clientY);
+});
+
+on("keydown", function (e) {
+    console.log("Key pressed:", e.key);
+});
+
+on("tick", function (data) {
+    console.log("Tick event:", data.time.toLocaleTimeString());
+});
+
+
+startEventLoop();
