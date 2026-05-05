@@ -1,0 +1,65 @@
+createMovieDB.js
+const mysql = require('mysql');
+
+
+const connection = mysql.createConnection({
+  host: 'localhost',    // MySQL server host
+  user: 'root',         // Your MySQL username
+  password: 'password'  // Your MySQL password
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting: ' + err.stack);
+    return;
+  }
+  console.log('Connected as id ' + connection.threadId);
+
+  connection.query('CREATE DATABASE IF NOT EXISTS MovieDB', (err, result) => {
+    if (err) throw err;
+    console.log('Database created or already exists.');
+
+    connection.query('USE MovieDB', (err, result) => {
+      if (err) throw err;
+
+      const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS Movies (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          title VARCHAR(255) NOT NULL,
+          director VARCHAR(255),
+          release_year YEAR,
+          genre VARCHAR(100)
+        )
+      `;
+      connection.query(createTableQuery, (err, result) => {
+        if (err) throw err;
+        console.log('Movies table created successfully.');
+
+        connection.end();
+      });
+    });
+  });
+});
+
+Q2)
+fileDownload.js
+const express = require('express');
+const path = require('path');
+const app = express();
+const PORT = 3000;
+
+app.get('/download', (req, res) => {
+  const filePath = path.join(__dirname, 'sample.txt'); // Replace with your file
+  res.download(filePath, 'downloadedFile.txt', (err) => {
+    if (err) {
+      console.error("File download error:", err);
+      res.status(500).send('Error downloading file.');
+    } else {
+      console.log("File sent for download");
+    }
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
