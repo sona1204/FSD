@@ -1,0 +1,65 @@
+const mysql = require('mysql');
+
+
+const con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: ""   // add your MySQL password here
+});
+
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+
+
+  con.query("CREATE DATABASE college", function (err, result) {
+    if (err) throw err;
+    console.log("Database created");
+
+   
+    const conDB = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "",
+      database: "college"
+    });
+
+    conDB.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected to college DB!");
+
+      const sql = `CREATE TABLE students (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(50),
+        course VARCHAR(50),
+        age INT
+      )`;
+
+      conDB.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("Table created");
+      });
+    });
+  });
+});
+
+
+Q2
+module.js
+exports.myDateTime = function () {
+  return new Date().toString();
+};
+
+server.js
+const http = require('http');
+const dt = require('./modules'); // import custom module
+
+// Create server
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write("Current Date and Time: " + dt.myDateTime());
+  res.end();
+}).listen(8080);
+
+console.log("Server running at http://localhost:8080/");
