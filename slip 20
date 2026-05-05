@@ -1,0 +1,95 @@
+// Import MySQL module
+const mysql = require('mysql');
+
+// Create connection to MySQL server
+const connection = mysql.createConnection({
+    host: 'localhost',     // MySQL host
+    user: 'root',          // MySQL username
+    password: 'your_password' // MySQL password
+});
+
+// Connect to MySQL
+connection.connect(err => {
+    if (err) throw err;
+    console.log("Connected to MySQL!");
+
+    // Create a database
+    connection.query("CREATE DATABASE IF NOT EXISTS studentDB", (err, result) => {
+        if (err) throw err;
+        console.log("Database created or already exists!");
+
+        // Use the database
+        connection.changeUser({ database: 'studentDB' }, (err) => {
+            if (err) throw err;
+
+            // Create table 'students'
+            const createTableQuery = `
+                CREATE TABLE IF NOT EXISTS students (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(50) NOT NULL,
+                    age INT,
+                    email VARCHAR(50) UNIQUE
+                )
+            `;
+            connection.query(createTableQuery, (err, result) => {
+                if (err) throw err;
+                console.log("Table 'students' created successfully!");
+                connection.end();
+            });
+        });
+    });
+});
+
+
+
+Q2)
+<!DOCTYPE html>
+<html ng-app="validationApp">
+<head>
+    <title>Username Validation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="ValidationController">
+
+    <h2>User Registration</h2>
+
+    <form ng-submit="validate()">
+        <label>Username:</label>
+        <input type="text" ng-model="username" /><br/><br/>
+        <label>Password:</label>
+        <input type="password" ng-model="password" /><br/><br/>
+        <button type="submit">Validate</button>
+    </form>
+
+    <p style="color: green;">{{message}}</p>
+
+    <script>
+        var app = angular.module('validationApp', []);
+
+        app.controller('ValidationController', function($scope) {
+            $scope.message = "";
+
+            $scope.validate = function() {
+                // Username validation
+                if (!$scope.username) {
+                    alert("Enter username");
+                    return;
+                }
+                if ($scope.username.length < 3) {
+                    alert("Username is too short");
+                    return;
+                }
+
+                // Password validation
+                if (!$scope.password || $scope.password.length < 8) {
+                    alert("Password must be at least 8 characters");
+                    return;
+                }
+
+                $scope.message = "Valid username and password!";
+            };
+        });
+    </script>
+
+</body>
+</html>
