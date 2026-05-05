@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="alertApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Alert</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<h2>Click Alert</h2>
+
+
+<button ng-click="showAlert()">Click me</button>
+
+<script>
+    var app = angular.module('alertApp', []);
+
+    app.controller('AlertController', function($scope) {
+        $scope.showAlert = function() {
+            alert('Button clicked!');
+        };
+    });
+</script>
+
+</body>
+</html>
+
+
+Q.2) 
+fileServer.js
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const server = http.createServer((req, res) => {
+    
+    const filePath = path.join(__dirname, req.url);
+
+   
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) {
+          
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('404 Not Found');
+        } else {
+            
+            fs.readFile(filePath, (err, data) => {
+                if (err) {
+                    // Error reading file, send 500 error response
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('500 Internal Server Error');
+                } else {
+                    
+                    res.writeHead(200, { 'Content-Type': 'text/plain' });
+                    res.end(data);
+                }
+            });
+        }
+    });
+});
+
+const port = 3000;
+server.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
+
+
+
+
+
