@@ -1,0 +1,108 @@
+// app.js
+
+const mysql = require("mysql2");
+
+const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "your_password",
+    database: "your_database"
+});
+
+connection.connect((err) => {
+    if (err) {
+        console.error("Database connection failed:", err.stack);
+        return;
+    }
+    console.log("Connected to database");
+});
+
+const query = "SELECT * FROM students";
+
+connection.query(query, (err, results) => {
+    if (err) {
+        console.error("Error executing query:", err);
+        return;
+    }
+
+    console.log("Students Table Data:");
+    console.log(results);
+});
+
+connection.end();
+
+Q2)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Form Validation</title>
+
+    <script>
+        function validateForm() {
+
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let mobile = document.getElementById("mobile").value;
+            let dept = document.getElementById("dept").value;
+            let date = document.getElementById("date").value;
+
+            // Regular Expressions
+            let nameRegex = /^[A-Za-z ]{2,30}$/;
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            let mobileRegex = /^[0-9]{10}$/;
+            let deptRegex = /^[A-Za-z ]{2,30}$/;
+            let dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+            if (!nameRegex.test(name)) {
+                alert("Invalid Name (only letters allowed)");
+                return false;
+            }
+
+            if (!emailRegex.test(email)) {
+                alert("Invalid Email ID");
+                return false;
+            }
+
+            if (!mobileRegex.test(mobile)) {
+                alert("Invalid Mobile Number (must be 10 digits)");
+                return false;
+            }
+
+            if (!deptRegex.test(dept)) {
+                alert("Invalid Department Name");
+                return false;
+            }
+
+            if (!dateRegex.test(date)) {
+                alert("Invalid Date Format (YYYY-MM-DD required)");
+                return false;
+            }
+
+            alert("Form Submitted Successfully!");
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+
+    <h2>Employee Registration Form</h2>
+
+    <form onsubmit="return validateForm()">
+
+        Name: <input type="text" id="name"><br><br>
+
+        Email: <input type="text" id="email"><br><br>
+
+        Mobile: <input type="text" id="mobile"><br><br>
+
+        Department: <input type="text" id="dept"><br><br>
+
+        Joining Date: <input type="text" id="date" placeholder="YYYY-MM-DD"><br><br>
+
+        <input type="submit" value="Submit">
+
+    </form>
+
+</body>
+</html>
