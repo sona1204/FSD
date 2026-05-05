@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html ng-app="mscApp">
+<head>
+    <meta charset="UTF-8">
+    <title>M.Sc (CS) Sem-II Syllabus</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+</head>
+<body>
+
+    <h1>M.Sc (CS) Sem-II Syllabus</h1>
+    
+    <!-- Navigation Links -->
+    <ul>
+        <li><a href="#!/subject/DBMS">DBMS</a></li>
+        <li><a href="#!/subject/OS">Operating Systems</a></li>
+        <li><a href="#!/subject/Networking">Networking</a></li>
+        <li><a href="#!/subject/AI">Artificial Intelligence</a></li>
+    </ul>
+
+    <!-- This is where the view content will be displayed -->
+    <div ng-view></div>
+
+    <script>
+        var app = angular.module("mscApp", ["ngRoute"]);
+
+        app.config(function($routeProvider){
+            $routeProvider
+            .when("/subject/:subjectName", {
+                templateUrl: function(params){
+                    return params.subjectName + ".html";
+                },
+                controller: "SyllabusController"
+            })
+            .otherwise({
+                redirectTo: "/subject/DBMS"
+            });
+        });
+
+        app.controller("SyllabusController", function($scope, $routeParams){
+            $scope.subject = $routeParams.subjectName;
+        });
+    </script>
+</body>
+</html>
+
+<h2>DBMS Syllabus</h2>
+<ul>
+    <li>Relational Model</li>
+    <li>SQL Queries</li>
+    <li>Normalization</li>
+    <li>Transaction Management</li>
+</ul>
+
+Q2)
+
+<!DOCTYPE html>
+<html ng-app="studentApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Details</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="StudentController">
+
+    <h1>Student Details</h1>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Department</th>
+                <th>Semester</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="student in students">
+                <td>{{student.rollNo}}</td>
+                <td>{{student.name}}</td>
+                <td>{{student.age}}</td>
+                <td>{{student.department}}</td>
+                <td>{{student.semester}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        var app = angular.module("studentApp", []);
+
+        app.controller("StudentController", function($scope){
+            $scope.students = [
+                {rollNo: 1, name: "Alice", age: 22, department: "CS", semester: 2},
+                {rollNo: 2, name: "Bob", age: 23, department: "CS", semester: 2},
+                {rollNo: 3, name: "Charlie", age: 22, department: "CS", semester: 2},
+                {rollNo: 4, name: "David", age: 24, department: "CS", semester: 2},
+                {rollNo: 5, name: "Eva", age: 23, department: "CS", semester: 2},
+                {rollNo: 6, name: "Frank", age: 22, department: "CS", semester: 2},
+                {rollNo: 7, name: "Grace", age: 23, department: "CS", semester: 2},
+                {rollNo: 8, name: "Hannah", age: 22, department: "CS", semester: 2},
+                {rollNo: 9, name: "Ian", age: 24, department: "CS", semester: 2},
+                {rollNo: 10, name: "Jane", age: 23, department: "CS", semester: 2}
+            ];
+        });
+    </script>
+
+</body>
+</html>
