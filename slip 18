@@ -1,0 +1,80 @@
+const express = require('express');
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+
+const app = express();
+app.use(bodyParser.json());
+
+// MySQL connection
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',       // replace with your MySQL username
+  password: '',       // replace with your MySQL password
+  database: 'testdb'
+});
+
+db.connect(err => {
+  if (err) throw err;
+  console.log('MySQL Connected!');
+});
+
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+
+  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    if (err) return res.status(500).json({ message: 'Database error', error: err });
+    if (results.length === 0) return res.status(401).json({ message: 'User not found' });
+
+    const user = results[0];
+    const isMatch = bcrypt.compareSync(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid password' });
+    }
+
+    res.json({ message: 'Login successful', user: { id: user.id, email: user.email } });
+  });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+
+Q2)
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+INSERT INTO customers (name, email) VALUES 
+('Alice', 'alice@example.com'),
+('Bob', 'bob@example.com'),
+
+('Amanda', 'amanda@example.com');
+const mysql = require('mysql2');
+
+
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',   // replace with your MySQL password
+  database: 'testdb'
+});
+
+db.connect(err => {
+  if (err) throw err;
+  console.log('MySQL Connected!');
+  
+  
+  const query = "SELECT * FROM customers WHERE name LIKE 'A%'";
+  db.query(query, (err, results) => {
+    if (err) throw err;
+    console.log('Customers whose name starts with A:');
+    console.table(results);
+    db.end();
+  });
+});
