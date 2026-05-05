@@ -1,0 +1,83 @@
+
+
+const message = "Hello World!";
+
+const upperCaseMessage = message.toUpperCase();
+
+console.log(upperCaseMessage);
+
+Q2)
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <title>AngularJS Form Validation</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="app.js"></script>
+  <style>
+    .error { color: red; }
+    input.ng-invalid.ng-touched { border-color: red; }
+  </style>
+</head>
+<body ng-controller="FormController">
+
+  <h2>User Details Form</h2>
+
+  <form name="userForm" ng-submit="submitForm()" novalidate>
+
+    <!-- Name -->
+    <label>Name:</label>
+    <input type="text" name="name" ng-model="user.name" ng-pattern="/^[a-zA-Z\s]+$/" required />
+    <span class="error" ng-show="userForm.name.$touched && userForm.name.$invalid">Name must contain only letters.</span>
+    <br><br>
+
+    <!-- Mobile Number -->
+    <label>Mobile Number:</label>
+    <input type="text" name="mobile" ng-model="user.mobile" ng-pattern="/^\d{10}$/" required />
+    <span class="error" ng-show="userForm.mobile.$touched && userForm.mobile.$invalid">Mobile must be 10 digits.</span>
+    <br><br>
+
+    <!-- Pin Code -->
+    <label>Pin Code:</label>
+    <input type="text" name="pincode" ng-model="user.pincode" ng-pattern="/^\d{6}$/" required />
+    <span class="error" ng-show="userForm.pincode.$touched && userForm.pincode.$invalid">Pin code must be 6 digits.</span>
+    <br><br>
+
+    <!-- Email -->
+    <label>Email:</label>
+    <input type="email" name="email" ng-model="user.email" required />
+    <span class="error" ng-show="userForm.email.$touched && userForm.email.$invalid">Invalid email.</span>
+    <br><br>
+
+    <!-- Address -->
+    <label>Address:</label>
+    <input type="text" name="address" ng-model="user.address" ng-pattern="/SPPU/" required />
+    <span class="error" ng-show="userForm.address.$touched && userForm.address.$invalid">Address must contain "SPPU".</span>
+    <br><br>
+
+    <button type="submit" ng-disabled="userForm.$invalid">Submit</button>
+  </form>
+
+  <div ng-if="submitted">
+    <h3>Submitted Data:</h3>
+    <pre>{{ user | json }}</pre>
+  </div>
+
+</body>
+</html>
+
+// app.js
+var app = angular.module('myApp', []);
+
+app.controller('FormController', ['$scope', function($scope) {
+    $scope.user = {};
+    $scope.submitted = false;
+
+    $scope.submitForm = function() {
+        if ($scope.userForm.$valid) {
+            $scope.submitted = true;
+        } else {
+            alert("Form has errors. Please correct them.");
+        }
+    };
+}]);
