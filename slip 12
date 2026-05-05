@@ -1,0 +1,128 @@
+
+const mysql = require('mysql');
+
+
+const connection = mysql.createConnection({
+    host: 'localhost',      
+    user: 'root',           
+    password: 'password',   
+    database: 'your_db'     
+});
+
+
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting: ' + err.stack);
+        return;
+    }
+    console.log('Connected as id ' + connection.threadId);
+});
+
+
+const query = 'SELECT * FROM customers';
+
+connection.query(query, (err, results) => {
+    if (err) throw err;
+
+    console.log('Customers Table Records:');
+    console.log(results); 
+});
+
+connection.end();
+
+Q2)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Feedback Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        form { max-width: 400px; margin: auto; }
+        input, select, textarea { width: 100%; margin: 8px 0; padding: 8px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+
+<h2>Student Feedback Form</h2>
+
+<form id="feedbackForm">
+    <label>Name:</label>
+    <input type="text" id="name" placeholder="Enter your name">
+    <span class="error" id="nameError"></span>
+
+    <label>Email ID:</label>
+    <input type="email" id="email" placeholder="Enter your email">
+    <span class="error" id="emailError"></span>
+
+    <label>Mobile No:</label>
+    <input type="text" id="mobile" placeholder="Enter your mobile number">
+    <span class="error" id="mobileError"></span>
+
+    <label>Feedback:</label>
+    <select id="feedback">
+        <option value="">--Select Feedback--</option>
+        <option value="Not good">Not good</option>
+        <option value="Good">Good</option>
+        <option value="Very good">Very good</option>
+        <option value="Excellent">Excellent</option>
+    </select>
+    <span class="error" id="feedbackError"></span>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent form submission
+
+    let name = document.getElementById('name').value.trim();
+    let email = document.getElementById('email').value.trim();
+    let mobile = document.getElementById('mobile').value.trim();
+    let feedback = document.getElementById('feedback').value;
+
+    let valid = true;
+
+    const nameRegex = /^[A-Za-z\s]{3,50}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+    const mobileRegex = /^[0-9]{10}$/;
+
+    if (!nameRegex.test(name)) {
+        document.getElementById('nameError').textContent = 'Enter a valid name (3-50 letters)';
+        valid = false;
+    } else {
+        document.getElementById('nameError').textContent = '';
+    }
+
+    if (!emailRegex.test(email)) {
+        document.getElementById('emailError').textContent = 'Enter a valid email';
+        valid = false;
+    } else {
+        document.getElementById('emailError').textContent = '';
+    }
+
+    
+    if (!mobileRegex.test(mobile)) {
+        document.getElementById('mobileError').textContent = 'Enter a 10-digit mobile number';
+        valid = false;
+    } else {
+        document.getElementById('mobileError').textContent = '';
+    }
+
+    if (feedback === "") {
+        document.getElementById('feedbackError').textContent = 'Please select feedback';
+        valid = false;
+    } else {
+        document.getElementById('feedbackError').textContent = '';
+    }
+
+    if (valid) {
+        alert('Form submitted successfully!');
+        this.reset();
+    }
+});
+</script>
+
+</body>
+</html>
