@@ -1,0 +1,75 @@
+/index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Web Page</title>
+</head>
+<body>
+    <h1>Welcome to My Node.js Server!</h1>
+    <p>This page is served using Node.js and the file system module.</p>
+</body>
+</html>
+
+/server.js
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const PORT = 3000;
+
+const server = http.createServer((req, res) => {
+   
+    const filePath = path.join(__dirname, 'index.html');
+
+  
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            res.writeHead(500, {'Content-Type': 'text/plain'});
+            res.end('Error reading the file.');
+            return;
+        }
+
+       
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(data);
+    });
+});
+
+server.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
+
+Q2)
+modeule.js
+
+function getCurrentDateTime() {
+    const now = new Date();
+    return now.toString(); // Returns date & time as string
+}
+
+module.exports = {
+    getCurrentDateTime
+};
+
+server.js
+
+const http = require('http');
+const myModule = require('./modules'); // Import custom module
+
+
+const PORT = 3000;
+
+
+const server = http.createServer((req, res) => {
+    // Get current date & time from our module
+    const currentDateTime = myModule.getCurrentDateTime();
+
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end(`Hello! Current Date & Time is: ${currentDateTime}`);
+});
+
+
+server.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
