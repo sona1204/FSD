@@ -1,0 +1,93 @@
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+
+const server = http.createServer((req, res) => {
+    if (req.method === 'GET') {
+        // Serve the HTML form
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(`
+            <html>
+            <head>
+                <title>File Upload Form</title>
+            </head>
+            <body>
+                <h2>Upload File</h2>
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="myfile" required />
+                    <br><br>
+                    <input type="submit" value="Upload">
+                </form>
+            </body>
+            </html>
+        `);
+    } else if (req.method === 'POST' && req.url === '/upload') {
+        // Handle file upload (just for demo, not saving file)
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.end('File uploaded successfully (demo, file not saved).');
+        });
+    } else {
+        res.writeHead(404);
+        res.end('Not Found');
+    }
+});
+
+// Listen on port 3000
+server.listen(3000, () => {
+    console.log('Server running at http://localhost:3000/');
+});
+
+Q2
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>AngularJS Validation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="FormController">
+
+    <h2>User Validation Form</h2>
+
+    <form name="userForm" ng-submit="validate()">
+        <label>Username:</label>
+        <input type="text" ng-model="username" required />
+        <br><br>
+        <label>Password:</label>
+        <input type="password" ng-model="password" required />
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        angular.module('myApp', [])
+        .controller('FormController', ['$scope', function($scope) {
+            $scope.validate = function() {
+               
+                if (!$scope.username || $scope.username.trim() === '') {
+                    alert("Enter username");
+                    return;
+                }
+                if ($scope.username.length < 3) {
+                    alert("Username is too short");
+                    return;
+                }
+
+                if (!$scope.password || $scope.password.length < 8) {
+                    alert("Password must be at least 8 characters");
+                    return;
+                }
+
+                alert("Valid username and password");
+            };
+        }]);
+    </script>
+
+</body>
+</html>
